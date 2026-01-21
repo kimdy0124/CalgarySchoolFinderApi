@@ -1,14 +1,11 @@
 from fastapi import FastAPI
-from app.routers import schools, districts, programs, geocode
 from fastapi.middleware.cors import CORSMiddleware
-import os
+
+from app.routers import schools, districts, programs, geocode
 
 app = FastAPI(title="Calgary School Finder API", version="0.1.0")
 
-@app.get("/health")
-def health():
-    return {"ok": True}
-
+# ✅ CORS (Vercel + local)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -20,6 +17,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/health")
+def health():
+    return {"ok": True}
 
 app.include_router(schools.router)
 app.include_router(districts.router)
